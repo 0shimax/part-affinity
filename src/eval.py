@@ -21,7 +21,7 @@ def main():
 
     # Create nn
     model, _, _ = create_model(opt)
-    model = model.cuda()
+    model = model.to(opt.device)
 
     # Get nn outputs
     outputs, indices = eval_net(test_loader, model, opt)

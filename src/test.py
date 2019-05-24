@@ -28,8 +28,7 @@ def main():
     _, test_loader = create_data_loaders(opt, fnames)
 
     # Create nn
-    model, _, _ = create_model(opt)
-    # model = model.cuda()
+    model, _, _ = create_model(opt).to(opt.device)
 
     # output result images
     test_net(test_loader, model, opt)

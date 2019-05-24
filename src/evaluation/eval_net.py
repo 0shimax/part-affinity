@@ -43,7 +43,7 @@ def eval_net(data_loader, model, opts):
             paf_avg_lst = []
             print("first loop", time.time() - start)
             for j in range(0, n_imgs):
-                imgs_torch = torch.from_numpy(imgs_np[j:j+1]).float().cuda()
+                imgs_torch = torch.from_numpy(imgs_np[j:j+1]).float().to(opts.device)
                 heatmaps, pafs = model(imgs_torch)
                 heatmap = heatmaps[-1].data.cpu().numpy()[0, :, :heights[j]//8, :widths[j]//8]
                 paf = pafs[-1].data.cpu().numpy()[0, :, :heights[j]//8, :widths[j]//8]
