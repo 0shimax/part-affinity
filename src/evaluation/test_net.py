@@ -54,7 +54,7 @@ def test_net(data_loader, model, opts):
             final = time.time()-start
             runtimes += [final]
             print("both loops took ", final)
-            append_result(0, subset, candidate, outputs)
+            append_result(dataset.idx, subset, candidate, outputs)
             vis_path = Path(opts.saveDir, 'viz')
             vis_path.mkdir(parents=True, exist_ok=True)
             cv2.imwrite(str(vis_path) + '/{}.png'.format(i), to_plot)

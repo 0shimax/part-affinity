@@ -25,6 +25,7 @@ class TestDataSet(data.Dataset):
         return img
 
     def __getitem__(self, index):
+        self.idx = index
         img = self.get_item_raw(index)
         img = normalize(img)
         return np.array([img]).astype('float32')
@@ -32,7 +33,7 @@ class TestDataSet(data.Dataset):
     def load_image(self, img_path):
         img = cv2.imread(str(img_path))
         img = self.crop_image(img)
-        img = img.astype('float32') / 255.
+        img = img / 255.
         return img
 
     def crop_image(self, img):
