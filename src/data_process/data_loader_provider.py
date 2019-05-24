@@ -1,11 +1,12 @@
 import torch
-from .coco import CocoDataSet
+# from .coco import CocoDataSet
+from data_process.test import TestDataSet
 
 
-def create_data_loaders(opt):
-    tr_dataset, te_dataset = create_data_sets(opt)
+def create_data_loaders(opt, fname=None):
+    tr_dataset, te_dataset = create_data_sets(opt, fname)
     train_loader = torch.utils.data.DataLoader(
-        tr_dataset,
+        te_dataset if tr_dataset is None else tr_dataset,
         batch_size=opt.batchSize,
         shuffle=True if opt.DEBUG == 0 else False,
         drop_last=True,
@@ -20,13 +21,13 @@ def create_data_loaders(opt):
     return train_loader, test_loader
 
 
-def create_data_sets(opt):
+def create_data_sets(opt, fnames=None):
     if opt.dataset == 'coco':
         tr_dataset = CocoDataSet(opt.data, opt, 'train')
         te_dataset = CocoDataSet(opt.data, opt, 'val')
-    elif otp.dataset=='original':
+    elif opt.dataset=='mine':
         tr_dataset = None
-        te_dataset = CocoDataSet(opt.data, opt, 'val')
+        te_dataset = TestDataSet(opt.data, fnames, opt)
     else:
         raise ValueError('Data set ' + opt.dataset + ' not available.')
     return tr_dataset, te_dataset

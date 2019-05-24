@@ -11,6 +11,7 @@ from data_process.process_utils import resize_hm, denormalize
 from visualization.visualize import visualize_output_single
 from .post import decode_pose, append_result
 
+
 # Typical evaluation is done on multi-scale and average across all evals is taken as output
 # These reduce the quantization error in the model
 def test_net(data_loader, model, opts):
@@ -24,13 +25,15 @@ def test_net(data_loader, model, opts):
             print(i)
             start = time.time()
             n_imgs = len(imgs)
+            heights = list(map(lambda x: x.shape[1], imgs))
+            widths = list(map(lambda x: x.shape[2], imgs))
             img_basic = imgs[0]
 
             heatmap_avg_lst = []
             paf_avg_lst = []
             print("first loop", time.time() - start)
             for j in range(0, n_imgs):
-                imgs_torch = torch.from_numpy(imgs_np[j:j+1]).float().cuda()
+                imgs_torch = torch.from_numpy(imgs[j:j+1]).float().to(opts.device)
                 heatmaps, pafs = model(imgs_torch)
                 heatmap = heatmaps[-1].data.cpu().numpy()[0, :, :heights[j]//8, :widths[j]//8]
                 paf = pafs[-1].data.cpu().numpy()[0, :, :heights[j]//8, :widths[j]//8]
@@ -51,9 +54,8 @@ def test_net(data_loader, model, opts):
             final = time.time()-start
             runtimes += [final]
             print("both loops took ", final)
-            append_result(dataset.indices[i], subset, candidate, outputs)
+            append_result(0, subset, candidate, outputs)
             vis_path = Path(opts.saveDir, 'viz')
             vis_path.mkdir(parents=True, exist_ok=True)
-            cv2.imwrite(Path(vis_path, '/{}.png'.format(i)), to_plot)
+            cv2.imwrite(str(vis_path) + '/{}.png'.format(i), to_plot)
     print ("runtime statistics for all images")
-    print(scipy.stats.describe(runtimes))

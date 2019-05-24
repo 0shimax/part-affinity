@@ -9,7 +9,7 @@ class Opts:
         self.parser.add_argument('-expID', default='default', help='Experiment ID')
         self.parser.add_argument('-data', default='default', help='Input data folder')
         self.parser.add_argument('-nThreads', default=4, type=int, help='Number of threads')
-        self.parser.add_argument('-expDir', default='../exp', help='Experiments directory')
+        self.parser.add_argument('-expDir', default='./exp', help='Experiments directory')
         self.parser.add_argument('-scaleAugFactor', default=0.25, type=float, help='Scale augment factor')
         self.parser.add_argument('-rotAugProb', default=0.4, type=float, help='Rotation augment probability')
         self.parser.add_argument('-flipAugProb', default=0.5, type=float, help='Flip augment probability')
