@@ -1,5 +1,8 @@
 import torch
-# from .coco import CocoDataSet
+try:
+    from .coco import CocoDataSet
+except:
+    pass
 from data_process.test import TestDataSet
 
 
