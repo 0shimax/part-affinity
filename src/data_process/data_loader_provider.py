@@ -24,6 +24,9 @@ def create_data_sets(opt):
     if opt.dataset == 'coco':
         tr_dataset = CocoDataSet(opt.data, opt, 'train')
         te_dataset = CocoDataSet(opt.data, opt, 'val')
+    elif otp.dataset=='original':
+        tr_dataset = None
+        te_dataset = CocoDataSet(opt.data, opt, 'val')
     else:
         raise ValueError('Data set ' + opt.dataset + ' not available.')
     return tr_dataset, te_dataset
